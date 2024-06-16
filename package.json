@@ -1,0 +1,34 @@
+{
+  "name": "music-bot",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "build": "tsc",
+    "start": "npx ts-node src/app.ts",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "devDependencies": {
+    "@eslint/js": "^9.2.0",
+    "@types/dotenv": "^8.2.0",
+    "@types/node": "^20.12.11",
+    "eslint": "^8.57.0",
+    "globals": "^15.2.0",
+    "nodemon": "^3.1.0",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.4.5",
+    "typescript-eslint": "^7.8.0"
+  },
+  "dependencies": {
+    "@ffmpeg-installer/ffmpeg": "^1.1.0",
+    "@sasmeee/igdl": "^1.0.0",
+    "@types/fluent-ffmpeg": "^2.1.24",
+    "dotenv": "^16.4.5",
+    "ffmpeg": "^0.0.4",
+    "fluent-ffmpeg": "^2.1.2",
+    "telegraf": "^4.16.3",
+    "ytdl-core": "^4.11.5"
+  }
+}
