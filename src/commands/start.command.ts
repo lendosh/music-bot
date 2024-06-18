@@ -12,8 +12,10 @@ import ffmpeg from "fluent-ffmpeg";
 import {ROOT_MEDIA_PATH} from "../app";
 import {MESSAGE_TEXT, PROCESS_STATUS} from "../utils/messages";
 
+// eslint-disable-next-line @typescript-eslint/no-var-requires
 const ffmpegPath = require('@ffmpeg-installer/ffmpeg').path;
 ffmpeg.setFfmpegPath(ffmpegPath);
+// eslint-disable-next-line @typescript-eslint/no-var-requires
 const instagramDl = require("@sasmeee/igdl");
 
 const speedPitches = [
@@ -54,14 +56,14 @@ export class StartCommand extends Command {
             ctx.session.media = {
                 title: audioInfo.file_name ?? 'unknown title',
                 path: `${ctx.session.userFolderPath}/${audioInfo.file_name}`,
-            }
+            };
             const file = fs.createWriteStream(ctx.session!.media!.path!);
 
             https.get(audio.href, (resp) => {
                 resp.pipe(file)
                     .on('error', async () => {
                         await ctx.sendMessage(PROCESS_STATUS.ERROR);
-                        return
+                        return;
                     });
             });
 
@@ -72,7 +74,7 @@ export class StartCommand extends Command {
             })
                 .on('error', async () => {
                     await ctx.sendMessage(PROCESS_STATUS.ERROR);
-                    return
+                    return;
                 });
         });
 
@@ -106,7 +108,7 @@ export class StartCommand extends Command {
                     title: info.videoDetails.title,
                     path: `${ctx.session?.userFolderPath}/${MESSAGE_TEXT.PERFORMER}_${info.videoDetails.title}.mp3`,
                     duration: info.videoDetails.lengthSeconds
-                }
+                };
 
                 await downloadYTAudioAndSendToUser(
                     userMessage,
@@ -153,7 +155,7 @@ export class StartCommand extends Command {
             ctx.session!.media = {
                 title: 'instagram_music',
                 path: `${ctx.session?.userFolderPath}/${MESSAGE_TEXT.PERFORMER}_instagram_music.mp4`
-            }
+            };
             try {
                 const messageInfo = await ctx.sendMessage(PROCESS_STATUS.START);
                 const file = fs.createWriteStream(ctx.session!.media!.path!);
@@ -193,7 +195,7 @@ export class StartCommand extends Command {
                 await ctx.sendMessage(PROCESS_STATUS.ERROR);
                 throw new Error(`Something went wrong: ${error}`);
             }
-        }
+        };
 
 
         const getYoutubeVideoInfo = async (message: string, ctx: Context) => {
@@ -203,7 +205,7 @@ export class StartCommand extends Command {
                 await ctx.sendMessage(PROCESS_STATUS.ERROR);
                 return;
             }
-        }
+        };
 
         const changePitch = async (pitch: string, mediaPath: string, ctx: IBotContext) => {
             const messageInfo = await ctx.sendMessage(PROCESS_STATUS.START);
@@ -247,14 +249,14 @@ export class StartCommand extends Command {
         ) => {
             const messageInfo = await ctx.sendMessage(PROCESS_STATUS.START);
 
-            ytdl(mediaUrl, {quality: 'highestaudio'})
-                .pipe(fs.createWriteStream(ctx.session?.media?.path!))
+            ytdl(mediaUrl, {quality: 'highestaudio', filter: 'audioonly'})
+                .pipe(fs.createWriteStream(ctx!.session!.media!.path!))
                 .on('finish', async () => {
-                    await ctx.replyWithAudio({source: ctx.session?.media?.path!}, {
+                    await ctx.replyWithAudio({source: ctx!.session!.media!.path!}, {
                         title: ctx.session?.media?.title,
                         performer: MESSAGE_TEXT.PERFORMER,
                         caption: MESSAGE_TEXT.CAPTION,
-                        duration: parseInt(ctx.session?.media?.duration!)
+                        duration: parseInt(ctx!.session!.media!.duration!)
                     });
                     await ctx.telegram.editMessageText(
                         messageInfo.chat.id,
@@ -272,6 +274,6 @@ export class StartCommand extends Command {
                         PROCESS_STATUS.ERROR
                     );
                 });
-        }
+        };
     }
 }

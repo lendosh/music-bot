@@ -1,6 +1,7 @@
 /dist
 .env
 /node_modules
+/.idea
 .env*
 .flaskenv*
 !.env.project
